@@ -6,7 +6,7 @@ After a long time learning and working with object-oriented programming, I took 
 
 > “Complexity is anything that makes software hard to understand or to modify." — John Outerhout
 
-Doing some research, I found functional programming concepts like immutability and pure function. Those concepts are big advantages to build side-effect-free functions, so it is easier to maintain systems — with some other benefits.
+Doing some research, I found functional programming concepts like immutability and pure function. Those concepts are big advantages to build side-effect-free functions, so it is easier to maintain systems — with some other [benefits](https://hackernoon.com/why-functional-programming-matters-c647f56a7691).
 
 In this post, I will tell you more about functional programming, and some important concepts, with a lot of code examples. In Javascript!
 
@@ -18,17 +18,17 @@ In this post, I will tell you more about functional programming, and some import
 
 ![](https://cdn-images-1.medium.com/max/1600/0*FMur6URY7yAVjeuP)
 
-The first fundamental concept we learn when we want to understand functional programming is pure functions. But what does that really mean? What makes a function pure?
+The first fundamental concept we learn when we want to understand functional programming is **pure functions**. But what does that really mean? What makes a function pure?
 
-So how do we know if a function is pure or not? Here is a very strict definition of purity:
+So how do we know if a function is `pure` or not? Here is a very strict definition of purity:
 
-* It returns the same result if given the same arguments (it is also referred as deterministic)
+* It returns the same result if given the same arguments (it is also referred as `deterministic`)
 
 * It does not cause any observable side effects
 
 #### It returns the same result if given the same arguments
 
-Imagine we want to implement a function that calculates the area of a circle. An impure function would receive radius as the parameter, and then calculate radius * radius * PI:
+Imagine we want to implement a function that calculates the area of a circle. An impure function would receive `radius` as the parameter, and then calculate `radius * radius * PI`:
 
 ```javascript
 const PI = 3.14;
@@ -42,9 +42,9 @@ calculateArea(10); // returns 314.0
 
 Why is this an impure function? Simply because it uses a global object that was not passed as a parameter to the function.
 
-Now imagine some mathematicians argue that the PI value is actually 42and change the value of the global object.
+Now imagine some mathematicians argue that the `PI` value is actually `42`and change the value of the global object.
 
-Our impure function will now result in 10 * 10 * 42 = 4200. For the same parameter (radius = 10), we have a different result. Let's fix it!
+Our impure function will now result in `10 * 10 * 42` = `4200`. For the same parameter (`radius = 10`), we have a different result. Let's fix it!
 
 ```javascript
 const PI = 3.14;
@@ -56,11 +56,11 @@ function calculateArea(radius, pi) {
 calculateArea(10, PI); // returns 314.0
 ```
 
-TA-DA 🎉! Now we’ll always pass thePI value as a parameter to the function. So now we are just accessing parameters passed to the function. No external object.
+TA-DA 🎉! Now we’ll always pass the`PI` value as a parameter to the function. So now we are just accessing parameters passed to the function. No `external object`.
 
-* For the parameters radius = 10 & PI = 3.14, we will always have the same the result: 314.0
+* For the parameters `radius = 10` & `PI = 3.14`, we will always have the same the result: `314.0`
 
-* For the parameters radius = 10 & PI = 42, we will always have the same the result: 4200
+* For the parameters `radius = 10` & `PI = 42`, we will always have the same the result: `4200`
 
 #### Reading Files
 
@@ -108,11 +108,11 @@ increaseCounter(counter);
 console.log(counter); // 2
 ```
 
-We have the counter value. Our impure function receives that value and re-assigns the counter with the value increased by 1.
+We have the `counter` value. Our impure function receives that value and re-assigns the counter with the value increased by 1.
 
-Observation: mutability is discouraged in functional programming.
+**Observation**: mutability is discouraged in functional programming.
 
-We are modifying the global object. But how would we make it pure? Just return the value increased by 1. Simple as that.
+We are modifying the global object. But how would we make it `pure`? Just return the value increased by 1. Simple as that.
 
 ```javascript
 let counter = 1;
@@ -125,7 +125,7 @@ increaseCounter(counter); // 2
 console.log(counter); // 1
 ```
 
-See that our pure function increaseCounter returns 2, but the counter value is still the same. The function returns the incremented value without altering the value of the variable.
+See that our pure function `increaseCounter` returns 2, but the `counter` value is still the same. The function returns the incremented value without altering the value of the variable.
 
 If we follow these two simple rules, it gets easier to understand our programs. Now every function is isolated and unable to impact other parts of our system.
 
@@ -135,9 +135,9 @@ Pure functions are stable, consistent, and predictable. Given the same parameter
 
 The code’s definitely easier to test. We don’t need to mock anything. So we can unit test pure functions with different contexts:
 
-* Given a parameter A → expect the function to return value B
+* Given a parameter `A` → expect the function to return value `B`
 
-* Given a parameter C → expect the function to return value D
+* Given a parameter `C` → expect the function to return value `D`
 
 A simple example would be a function to receive a collection of numbers and expect it to increment each element of this collection.
 
@@ -149,13 +149,13 @@ function incrementNumbers(list) {
 }
 ```
 
-We receive the numbers array, use map incrementing each number, and return a new list of incremented numbers.
+We receive the `numbers` array, use `map` incrementing each number, and return a new list of incremented numbers.
 
 ```javascript
 incrementNumbers(list); // [2, 3, 4, 5, 6]
 ```
 
-For the input [1 2 3 4 5], the expected output would be [2 3 4 5 6].
+For the `input` `[1, 2, 3, 4, 5]`, the expected `output` would be `[2, 3, 4, 5, 6]`.
 
 ### Immutability
 
@@ -163,9 +163,9 @@ For the input [1 2 3 4 5], the expected output would be [2 3 4 5 6].
 
 ![](https://cdn-images-1.medium.com/max/1600/0*MGlzHgISuw0dXwsf)
 
-When data is immutable, its state cannot change after it’s created. If you want to change an immutable object, you can’t. Instead, you create a new object with the new value.
+**after it’s created. **If you want to change an immutable object, you can’t. Instead,** you create a new object with the new value.**
 
-In Javascript we commonly use the for loop. This next for statement has some mutable variables.
+In Javascript we commonly use the `for` loop. This next `for` statement has some mutable variables.
 
 ```javascript
 var values = [1, 2, 3, 4, 5];
@@ -178,7 +178,7 @@ for (var i = 0; i < values.length; i++) {
 sumOfValues // 15
 ```
 
-For each iteration, we are changing the i and the sumOfValue state. But how do we handle mutability in iteration? Recursion!
+For each iteration, we are changing the `i` and the `sumOfValue` **state**. But how do we handle mutability in iteration? Recursion!
 
 ```javascript
 let list = [1, 2, 3, 4, 5];
@@ -197,15 +197,15 @@ list; // [1, 2, 3, 4, 5]
 accumulator; // 0
 ```
 
-So here we have the sum function that receives a vector of numerical values. The function calls itself until we get the list empty (our recursion base case). For each "iteration" we will add the value to the total accumulator.
+So here we have the `sum` function that receives a vector of numerical values. The function calls itself until we get the list empty ([our recursion ](https://en.wikipedia.org/wiki/Recursion_(computer_science)#Recursive_functions_and_algorithms)`base case`). For each "iteration" we will add the value to the `total` accumulator.
 
-With recursion, we keep our variables immutable.
+immutable. The `list` and the `accumulator` variables are not changed. It keeps the same value.
 
-Observation: Yes! We can use reduce to implement this function. We will cover this in the Higher Order Functions topic.
+**Observation**: Yes! We can use `reduce` to implement this function. We will cover this in the `Higher Order Functions` topic.
 
-It is also very common to build up the final state of an object. Imagine we have a string, and we want to transform this string into a url slug.
+It is also very common to build up the final **state** of an object. Imagine we have a string, and we want to transform this string into a `url slug`.
 
-In OOP in Ruby, we would create a class, let’s say, UrlSlugify. And this class will have a slugify! method to transform the string input into a url slug.
+In OOP in Ruby, we would create a class, let’s say, `UrlSlugify`. And this class will have a `slugify!` method to transform the string input into a `url slug`.
 
 ```ruby
 class UrlSlugify
@@ -225,7 +225,7 @@ end
 UrlSlugify.new(' I will be a url slug   ').slugify! # "i-will-be-a-url-slug"
 ```
 
-Beautiful! It’s implemented! Here we have imperative programming saying exactly what we want to do in each slugify process — first lower case, then remove useless white spaces and, finally, replace remaining white spaces with hyphens.
+Beautiful! It’s implemented! Here we have imperative programming saying exactly what we want to do in each `slugify` process — first lower case, then remove useless white spaces and, finally, replace remaining white spaces with hyphens.
 
 But we are mutating the input state in this process.
 
@@ -246,19 +246,19 @@ slugify(string); // i-will-be-a-url-slug
 
 Here we have:
 
-* toLowerCase: converts the string to all lower case
+* `toLowerCase`: converts the string to all lower case
 
-* trim: removes whitespace from both ends of a string
+* `trim`: removes whitespace from both ends of a string
 
-* split and join: replaces all instances of match with replacement in a given string
+* `split` and `join`: replaces all instances of match with replacement in a given string
 
-We combine all 4 functions and we can "slugify" our string.
+We combine all these 4 functions and we can `"slugify"` our string.
 
 ### Referential transparency
 
 ![](https://cdn-images-1.medium.com/max/1600/0*K0VAbQjAwmKZb1at)
 
-Let’s implement a square function:
+Let’s implement a `square function`:
 
 ```javascript
 function square(n) {
@@ -275,11 +275,11 @@ square(2); // 4
 // ...
 ```
 
-Passing 2 as a parameter of the square function will always returns 4. So now we can replace the square(2) with 4. That's it! Our function is referentially transparent.
+Passing `2` as a parameter of the `square function` will always returns 4. So now we can replace the `square(2)` with 4. That's it! Our function is `referentially transparent`.
 
 Basically, if a function consistently yields the same result for the same input, it is referentially transparent.
 
-pure functions + immutable data = referential transparency
+**pure functions + immutable data = referential transparency**
 
 With this concept, a cool thing we can do is to memoize the function. Imagine we have this function:
 
@@ -295,19 +295,19 @@ And we call it with these parameters:
 sum(3, sum(5, 8));
 ```
 
-The sum(5, 8) equals 13. This function will always result in 13. So we can do this:
+The `sum(5, 8)` equals `13`. This function will always result in `13`. So we can do this:
 
 ```javascript
 sum(3, 13);
 ```
 
-And this expression will always result in 16. We can replace the entire expression with a numerical constant and memoize it.
+And this expression will always result in `16`. We can replace the entire expression with a numerical constant and [memoize](https://en.wikipedia.org/wiki/Memoization) it.
 
 ### Functions as first-class entities
 
 ![](https://cdn-images-1.medium.com/max/1600/0*K6m1Ftw54Wm6tfFB)
 
-The idea of functions as first-class entities is that functions are also treated as values and used as data.
+The idea of functions as first-class entities is that functions are **also** treated as values **and** used as data.
 
 Functions as first-class entities can:
 
@@ -354,7 +354,7 @@ doubleOperator(sum, 3, 1); // 8
 doubleOperator(subtraction, 3, 1); // 4
 ```
 
-Done! Now we have an f argument, and use it to process a and b. We passed the sum and subtraction functions to compose with the doubleOperator function and create a new behavior.
+Done! Now we have an `f` argument, and use it to process `a` and `b`. We passed the `sum` and `subtraction` functions to compose with the `doubleOperator` function and create a new behavior.
 
 ### Higher-order functions
 
@@ -364,25 +364,25 @@ When we talk about higher-order functions, we mean a function that either:
 
 * returns a function as its result
 
-The doubleOperator function we implemented above is a higher-order function because it takes an operator function as an argument and uses it.
+The `doubleOperator` function we implemented above is a higher-order function because it takes an operator function as an argument and uses it.
 
-You’ve probably already heard about filter, map, and reduce. Let's take a look at these.
+You’ve probably already heard about `filter`, `map`, and `reduce`. Let's take a look at these.
 
 ### Filter
 
-Given a collection, we want to filter by an attribute. The filter function expects a true or false value to determine if the element should or should not be included in the result collection. Basically, if the callback expression is true, the filter function will include the element in the result collection. Otherwise, it will not.
+Given a collection, we want to filter by an attribute. The filter function expects a `true` or `false` value to determine if the element **should or should not** be included in the result collection. Basically, if the callback expression is `true`, the filter function will include the element in the result collection. Otherwise, it will not.
 
 A simple example is when we have a collection of integers and we want only the even numbers.
 
-Imperative approach
+**Imperative approach**
 
 An imperative way to do it with Javascript is to:
 
-* create an empty vector evenNumbers
+* create an empty array `evenNumbers`
 
-* iterate over the numbers vector
+* iterate over the `numbers` array
 
-* push the even numbers to the evenNumbers vector
+* push the even numbers to the `evenNumbers` array
 
 ```javascript
 var numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -397,7 +397,7 @@ for (var i = 0; i < numbers.length; i++) {
 console.log(evenNumbers); // (6) [0, 2, 4, 6, 8, 10]
 ```
 
-We can use the filter higher order function to receive the even function, and return a list of even numbers:
+We can also use the `filter` higher order function to receive the `even` function, and return a list of even numbers:
 
 ```javascript
 function even(number) {
@@ -408,7 +408,7 @@ let listOfNumbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 listOfNumbers.filter(even); // [0, 2, 4, 6, 8, 10]
 ```
 
-One interesting problem I solved on Hacker Rank FP Path was the Filter Array problem. The problem idea is to filter a given array of integers and output only those values that are less than a specified value X.
+One interesting problem I solved on [Hacker Rank FP](https://www.hackerrank.com/domains/fp) Path was the [Filter Array problem](https://www.hackerrank.com/challenges/fp-filter-array/problem). The problem idea is to filter a given array of integers and output only those values that are less than a specified value `X`.
 
 An imperative Javascript solution to this problem is something like:
 
@@ -428,11 +428,11 @@ var filterArray = function(x, coll) {
 console.log(filterArray(3, [10, 9, 8, 2, 7, 5, 1, 3, 0])); // (3) [2, 1, 0]
 ```
 
-We say exactly what our function needs to do — iterate over the collection, compare the collection current item with x, and push this element to the resultArray if it pass the condition.
+We say exactly what our function needs to do — iterate over the collection, compare the collection current item with `x`, and push this element to the `resultArray` if it pass the condition.
 
-Declarative approach
+**Declarative approach**
 
-But we want a more declarative way to solve this problem, and using the filter higher order function as well.
+But we want a more declarative way to solve this problem, and using the `filter` higher order function as well.
 
 A declarative Javascript solution would be something like this:
 
@@ -450,11 +450,11 @@ let numbers = [10, 9, 8, 2, 7, 5, 1, 3, 0];
 filterArray(3, numbers); // [2, 1, 0]
 ```
 
-Using this in the smaller function seems a bit strange in the first place, but is easy to understand.
+Using `this` in the `smaller` function seems a bit strange in the first place, but is easy to understand.
 
-this will be the second parameter in the filter function. In this case, 3 (the x) is represented by this. That's it.
+`this` will be the second parameter in the `filter` function. In this case, `3` (the `x`) is represented by `this`. That's it.
 
-We can also do this with maps. Imagine we have a map of people with their name and age. 
+We can also do this with maps. Imagine we have a map of people with their `name` and `age`.
 
 ```javascript
 let people = [
@@ -480,9 +480,9 @@ overAge(people); // [{ name: 'TK', age: 26 }, { name: 'Kazumi', age: 30 }]
 
 Summary of code:
 
-* we have a list of people (with name and age).
+* we have a list of people (with `name` and `age`).
 
-* we have a function olderThan21. In this case, for each person in people array, we want to access the age and see if it is older than 21.
+* we have a function `olderThan21`. In this case, for each person in people array, we want to access the `age` and see if it is older than 21.
 
 * we filter all people based on this function.
 
@@ -492,7 +492,7 @@ The idea of map is to transform a collection.
 
 > The map method transforms a collection by applying a function to all of its elements and building a new collection from the returned values.
 
-Let’s get the same people collection above. We don't want to filter by “over age” now. We just want a list of strings, something like TK is 26 years old. So the final string might be :name is :age years old where :name and :age are attributes from each element in the people collection.
+Let’s get the same `people` collection above. We don't want to filter by “over age” now. We just want a list of strings, something like `TK is 26 years old`. So the final string might be `:name is :age years old` where `:name` and `:age` are attributes from each element in the `people` collection.
 
 In a imperative Javascript way, it would be:
 
@@ -529,9 +529,9 @@ peopleSentences(people); // ['TK is 26 years old', 'Kaio is 10 years old', 'Kazu
 
 The whole idea is to transform a given array into a new array.
 
-Another interesting Hacker Rank problem was the update list problem. We just want to update the values of a given array with their absolute values.
+Another interesting Hacker Rank problem was the [update list problem](https://www.hackerrank.com/challenges/fp-update-list/problem). We just want to update the values of a given array with their absolute values.
 
-For example, the input [1, 2, 3, -4, 5]needs the output to be [1, 2, 3, 4, 5]. The absolute value of -4 is 4.
+For example, the input `[1, 2, 3, -4, 5]`needs the output to be `[1, 2, 3, 4, 5]`. The absolute value of `-4` is `4`.
 
 A simple solution would be an in-place update for each collection value.
 
@@ -545,15 +545,15 @@ for (var i = 0; i < values.length; i++) {
 console.log(values); // [1, 2, 3, 4, 5]
 ```
 
-We use the Math.abs function to transform the value into its absolute value, and do the in-place update.
+We use the `Math.abs` function to transform the value into its absolute value, and do the in-place update.
 
-This is not a functional way to implement this solution.
+This is **not** a functional way to implement this solution.
 
 First, we learned about immutability. We know how immutability is important to make our functions more consistent and predictable. The idea is to build a new collection with all absolute values.
 
-Second, why not use map here to "transform" all data?
+Second, why not use `map` here to "transform" all data?
 
-My first idea was to test the Math.abs function to handle only one value.
+My first idea was to test the `Math.abs` function to handle only one value.
 
 ```javascript
 Math.abs(-1); // 1
@@ -564,7 +564,7 @@ Math.abs(2); // 2
 
 We want to transform each value into a positive value (the absolute value).
 
-Now that we know how to do absolute for one value, we can use this function to pass as an argument to the map function. Do you remember that a higher order function can receive a function as an argument and use it? Yes, map can do it!
+Now that we know how to do `absolute` for one value, we can use this function to pass as an argument to the `map` function. Do you remember that a `higher order function` can receive a function as an argument and use it? Yes, map can do it!
 
 ```javascript
 let values = [1, 2, 3, -4, 5];
@@ -578,11 +578,11 @@ updateListMap(values); // [1, 2, 3, 4, 5]
 
 Wow. So beautiful! 😍
 
-#### Reduce
+### Reduce
 
 The idea of reduce is to receive a function and a collection, and return a value created by combining the items.
 
-A common example people talk about is to get the total amount of an order. Imagine you were at a shopping website. You’ve added Product 1, Product 2, Product 3, and Product 4 to your shopping cart (order). Now we want to calculate the total amount of the shopping cart.
+A common example people talk about is to get the total amount of an order. Imagine you were at a shopping website. You’ve added `Product 1`, `Product 2`, `Product 3`, and `Product 4` to your shopping cart (order). Now we want to calculate the total amount of the shopping cart.
 
 In imperative way, we would iterate the order list and sum each product amount to the total amount.
 
@@ -603,7 +603,7 @@ for (var i = 0; i < orders.length; i++) {
 console.log(totalAmount); // 120
 ```
 
-Using reduce, we can build a function to handle the amount sum and pass it as an argument to the reduce function.
+Using `reduce`, we can build a function to handle the `amount sum` and pass it as an argument to the `reduce` function.
 
 ```javascript
 let shoppingCart = [
@@ -622,11 +622,11 @@ function getTotalAmount(shoppingCart) {
 getTotalAmount(shoppingCart); // 120
 ```
 
-Here we have shoppingCart, the function sumAmount that receives the current currentTotalAmount , and the order object to sum them.
+Here we have `shoppingCart`, the function `sumAmount` that receives the current `currentTotalAmount` , and the `order` object to `sum` them.
 
-The getTotalAmount function is used to reduce the shoppingCart by using the sumAmount and starting from 0.
+The `getTotalAmount` function is used to `reduce` the `shoppingCart` by using the `sumAmount` and starting from `0`.
 
-Another way to get the total amount is to compose map and reduce. What do I mean by that? We can use map to transform the shoppingCart into a collection of amount values, and then just use the reduce function with sumAmount function.
+Another way to get the total amount is to compose `map` and `reduce`. What do I mean by that? We can use `map` to transform the `shoppingCart` into a collection of `amount` values, and then just use the `reduce` function with `sumAmount` function.
 
 ```javascript
 const getAmount = (order) => order.amount;
@@ -641,11 +641,11 @@ function getTotalAmount(shoppingCart) {
 getTotalAmount(shoppingCart); // 120
 ```
 
-The getAmount receives the product object and returns only the amount value. So what we have here is [10, 30, 20, 60]. And then the reduce combines all items by adding up. Beautiful!
+The `getAmount` receives the product object and returns only the `amount` value. So what we have here is `[10, 30, 20, 60]`. And then the `reduce` combines all items by adding up. Beautiful!
 
 We took a look at how each higher order function works. I want to show you an example of how we can compose all three functions in a simple example.
 
-Talking about shopping cart, imagine we have this list of products in our order:
+Talking about `shopping cart`, imagine we have this list of products in our order:
 
 ```javascript
 let shoppingCart = [
@@ -658,11 +658,11 @@ let shoppingCart = [
 
 We want the total amount of all books in our shopping cart. Simple as that. The algorithm?
 
-* filter by book type
+* **filter** by book type
 
-* transform the shopping cart into a collection of amount using map
+* transform the shopping cart into a collection of amount using **map**
 
-* combine all items by adding them up with reduce
+* combine all items by adding them up with **reduce**
 
 ```javascript
 let shoppingCart = [
@@ -690,78 +690,78 @@ Done! 🎉
 
 ### Resources
 
-I’ve organised some resources I read and studied. I’m sharing the ones that I found really interesting. For more resources, visit my Functional Programming Github repository.
+I’ve organised some resources I read and studied. I’m sharing the ones that I found really interesting. For more resources, visit my [Functional Programming Github repository](https://github.com/LeandroTk/learning-functional-programming).
 
-* Ruby specific resources
+* [Ruby specific resources](https://github.com/LeandroTk/learning-functional-programming/tree/master/ruby)
 
-* Javascript specific resources
+* [Javascript specific resources](https://github.com/LeandroTk/learning-functional-programming/tree/master/javascript)
 
-* Clojure specific resources
+* [Clojure specific resources](https://github.com/LeandroTk/learning-functional-programming/tree/master/clojure)
 
 #### Intros
 
-* Learning FP in JS
+* [Learning FP in JS](https://www.youtube.com/watch?v=e-5obm1G_FY)
 
-* Intro do FP with Python
+* [Intro do FP with Python](https://codewords.recurse.com/issues/one/an-introduction-to-functional-programming)
 
-* Overview of FP
+* [Overview of FP](https://blog.codeship.com/overview-of-functional-programming)
 
-* A quick intro to functional JS
+* [A quick intro to functional JS](https://hackernoon.com/a-quick-introduction-to-functional-javascript-7e6fe520e7fa)
 
-* What is FP?
+* [What is FP?](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-functional-programming-7f218c68b3a0)
 
-* Functional Programming Jargon
+* [Functional Programming Jargon](https://github.com/hemanth/functional-programming-jargon)
 
 #### Pure functions
 
-* What is a pure function?
+* [What is a pure function?](https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-pure-function-d1c076bec976)
 
-* Pure Functional Programming 1
+* [Pure Functional Programming 1](https://www.fpcomplete.com/blog/2017/04/pure-functional-programming)
 
-* Pure Functional Programming 2
+* [Pure Functional Programming 2](https://www.fpcomplete.com/blog/2017/05/pure-functional-programming-part-2)
 
 #### Immutable data
 
-* Immutable DS for functional programming
+* [Immutable DS for functional programming](https://www.youtube.com/watch?v=Wo0qiGPSV-s)
 
-* Why shared mutable state is the root of all evil
+* [Why shared mutable state is the root of all evil](http://henrikeichenhardt.blogspot.com/2013/06/why-shared-mutable-state-is-root-of-all.html)
 
 #### Higher-order functions
 
-* Eloquent JS: Higher Order Functions
+* [Eloquent JS: Higher Order Functions](https://eloquentjavascript.net/05_higher_order.html)
 
-* Fun fun function Filter
+* [Fun fun function Filter](https://www.youtube.com/watch?v=BMUiFMZr7vk&t=0s&list=PL0zVEGEvSaeEd9hlmCXrk5yUyqUag-n84&index=2&ab_channel=FunFunFunction)
 
-* Fun fun function Map
+* [Fun fun function Map](https://www.youtube.com/watch?v=bCqtb-Z5YGQ&index=2&list=PL0zVEGEvSaeEd9hlmCXrk5yUyqUag-n84&ab_channel=FunFunFunction)
 
-* Fun fun function Basic Reduce
+* [Fun fun function Basic Reduce](https://www.youtube.com/watch?v=Wl98eZpkp-c&list=PL0zVEGEvSaeEd9hlmCXrk5yUyqUag-n84&index=3&frags=wn&ab_channel=FunFunFunction)
 
-* Fun fun function Advanced Reduce
+* [Fun fun function Advanced Reduce](https://www.youtube.com/watch?v=1DMolJ2FrNY&list=PL0zVEGEvSaeEd9hlmCXrk5yUyqUag-n84&index=4&ab_channel=FunFunFunction)
 
-* Clojure Higher Order Functions
+* [Clojure Higher Order Functions](https://clojure.org/guides/higher_order_functions)
 
-* Purely Function Filter
+* [Purely Function Filter](https://purelyfunctional.tv/lesson/filter/)
 
-* Purely Functional Map
+* [Purely Functional Map](https://purelyfunctional.tv/lesson/map/)
 
-* Purely Functional Reduce
+* [Purely Functional Reduce](https://purelyfunctional.tv/lesson/reduce/)
 
 #### Declarative Programming
 
-* Declarative Programming vs Imperative
+* [Declarative Programming vs Imperative](https://tylermcginnis.com/imperative-vs-declarative-programming/)
 
 ### That’s it!
 
 Hey people, I hope you had fun reading this post, and I hope you learned a lot here! This was my attempt to share what I’m learning.
 
-Here is the repository with all codes from this article.
+[Here is the repository with all codes](https://github.com/tk-notes/fp-in-javascript-article-source-code) from this article.
 
-Come learn with me. I’m sharing resources and my code in this Learning Functional Programming repository.
+Come learn with me. I’m sharing resources and my code in this [Learning Functional Programming repository](https://github.com/LeandroTk/learning-functional-programming).
 
-I also wrote an FP post but using mainly Clojure ❤.
+I also wrote an [FP post but using mainly Clojure](https://medium.freecodecamp.org/an-introduction-to-the-basic-principles-of-functional-programming-a2c2a15c84)** ❤.**
 
 I hope you saw something useful to you here. And see you next time! :)
 
-My Twitter & Github. ☺
+My [Twitter](https://twitter.com/LeandroTk_) & [Github](https://github.com/LeandroTk). ☺
 
 TK.
