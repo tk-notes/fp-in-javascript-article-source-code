@@ -1,1 +1,1 @@
-# Concepts of Functional Programming in Javascript
+# Functional Programming Principles in Javascript
